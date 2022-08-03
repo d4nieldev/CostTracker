@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
 import Colors from "../constants/Colors";
-import ColorPickerModal from "../components/ColorPickerModal";
+import ColorPickerModal from "./ColorPickerModal";
 import TextBox from "../components/TextBox";
 import CTButton from "../components/CTButton";
 import LargeText from "../components/LargeText";
@@ -14,7 +14,11 @@ const AddCategoryModal = (props) => {
   const [categoryName, setCategoryName] = useState("");
 
   return (
-    <Modal visible={props.visible} animationType="slide">
+    <Modal
+      visible={props.visible}
+      animationType="slide"
+      onRequestClose={props.onCancel}
+    >
       <View style={styles.screen}>
         <LargeText style={{ paddingVertical: 70 }}>
           Add a New Category

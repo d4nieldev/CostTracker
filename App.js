@@ -21,12 +21,14 @@ export default function App() {
           id: 1,
           title: "Bought a bike",
           location: "LA",
+          date: "1/8/2022",
           cost: 25,
         },
         {
           id: 2,
           title: "Bought tickets for DisneyLand",
           location: "LA",
+          date: "1/8/2022",
           cost: 500,
         },
       ],
@@ -39,6 +41,7 @@ export default function App() {
           id: 1,
           title: "Bought a car",
           location: "LA",
+          date: "1/8/2022",
           cost: 100,
         },
       ],
@@ -65,7 +68,9 @@ export default function App() {
           )}
         </Drawer.Screen>
 
-        <Drawer.Screen name={Names.screens.history} component={HistoryScreen} />
+        <Drawer.Screen name={Names.screens.history}>
+          {(props) => <HistoryScreen categories={categories} />}
+        </Drawer.Screen>
 
         {categories.map((c) => (
           <Drawer.Screen
