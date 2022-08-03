@@ -11,10 +11,13 @@ import LargeText from "../components/LargeText";
 import TextBox from "../components/TextBox";
 import CTButton from "../components/CTButton";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import LocationPickerModal from "./LocationPickerModal";
 
 const AddCostModal = (props) => {
   const [costTitle, setCostTitle] = useState("");
+  const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
+
+  // fetch location
   const [location, setLocation] = useState({
     coords: { latitude: 0, longitude: 0 },
   });
@@ -38,7 +41,6 @@ const AddCostModal = (props) => {
       onRequestClose={props.onCancel}
       animationType="slide"
     >
-      {console.log(location)}
       <View style={styles.screen}>
         <LargeText style={{ paddingVertical: 70 }}>
           Add a New Cost to {props.category.name}
@@ -56,28 +58,21 @@ const AddCostModal = (props) => {
             onChangeText={(text) => setCostTitle(text)}
           />
         </View>
-        {/*location*/}
 
-        <MapView
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.001,
-            longitudeDelta: 0.001,
-          }}
-          style={{ flex: 1, width: "100%" }}
-          onPress={(e) => {
-            console.log(location);
-          }}
+        <Text>{errorMsg}</Text>
+        <CTButton
+          style={{ backgroundColor: "grey" }}
+          onPress={() => setIsLocationPickerVisible(true)}
         >
-          <Marker title="You are here" coordinate={location.coords}>
-            <Image
-              source={require("../assets/location.png")}
-              style={{ width: 50, height: 50 }}
-              resizeMode="contain"
-            />
-          </Marker>
-        </MapView>
+          <Text>Pick Location (Optinal)</Text>
+        </CTButton>
+        <LocationPickerModal
+          visible={isLocationPickerVisible}
+          onCancel={() => setIsLocationPickerVisible(false)}
+          currentLocation={location}
+          onSetLocation={(newLocation) => setLocation(newLocation)}
+        />
+
         {/*date*/}
         <View style={{ flexDirection: "row" }}></View>
         <View style={styles.buttonsContainer}>
