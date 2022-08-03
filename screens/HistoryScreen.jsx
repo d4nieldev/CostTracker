@@ -17,7 +17,11 @@ const HistoryScreen = ({ categories }) => {
   };
 
   return (
-    <FlatList data={categories} renderItem={({ item }) => renderItems(item)} />
+    <FlatList
+      data={categories}
+      renderItem={({ item }) => renderItems(item)}
+      keyExtractor={(item) => item.name}
+    />
   );
 };
 

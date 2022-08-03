@@ -1,13 +1,13 @@
 import { TextInput, StyleSheet } from "react-native";
 
 const TextBox = (props) => {
-  return <TextInput style={styles.textbox} {...props} />;
+  return <TextInput {...props} style={{ ...styles.textbox, ...props.style }} />;
 };
 
 const styles = StyleSheet.create({
   textbox: {
     flex: 1,
-    marginHorizontal: 10,
+    margin: 10,
     borderColor: "black",
     borderWidth: 1,
     padding: 13,
