@@ -18,8 +18,16 @@ export default function App() {
       color: "red",
       items: [
         {
+          id: 1,
           title: "Bought a bike",
+          location: "LA",
           cost: 25,
+        },
+        {
+          id: 2,
+          title: "Bought tickets for DisneyLand",
+          location: "LA",
+          cost: 500,
         },
       ],
     },
@@ -28,12 +36,21 @@ export default function App() {
       color: "blue",
       items: [
         {
+          id: 1,
           title: "Bought a car",
+          location: "LA",
           cost: 100,
         },
       ],
     },
   ]);
+
+  const AddCategoryHandler = (categoryName, categoryColor) => {
+    setCategories((existingCategories) => [
+      ...existingCategories,
+      { name: categoryName, color: categoryColor, items: [] },
+    ]);
+  };
 
   return (
     <NavigationContainer>
@@ -42,12 +59,14 @@ export default function App() {
           {(props) => (
             <HomeScreen
               categories={categories}
-              onAddCategory={(category) => console.log("Added " + category)}
+              onAddCategory={AddCategoryHandler}
               {...props}
             />
           )}
         </Drawer.Screen>
+
         <Drawer.Screen name={Names.screens.history} component={HistoryScreen} />
+
         {categories.map((c) => (
           <Drawer.Screen
             name={c.name}

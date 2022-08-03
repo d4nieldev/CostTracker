@@ -29,7 +29,7 @@ const HomeScreen = ({
   };
 
   const HandleAddCategory = (categoryName, selectedColor) => {
-    console.log("Added " + categoryName + " with color " + selectedColor);
+    onAddCategory(categoryName, selectedColor);
     setIsAddCategoryVisible(false);
   };
 
