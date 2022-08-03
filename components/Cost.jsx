@@ -5,8 +5,9 @@ const Cost = ({ cost }) => {
     <View style={styles.container}>
       <Text style={styles.itemTitle}>{cost.title}</Text>
       <View>
-        <Text style={styles.detailItem}>{cost.location}</Text>
-        <Text style={styles.detailItem}>{cost.date}</Text>
+        <Text style={styles.detailItem}>{cost.location.latitude}</Text>
+        <Text style={styles.detailItem}>{cost.location.longitude}</Text>
+        <Text style={styles.detailItem}>{cost.date.toDateString()}</Text>
         <Text style={styles.detailItem}>{cost.cost}</Text>
       </View>
     </View>

@@ -12,47 +12,30 @@ import CategoryScreen from "./screens/CategoryScreen";
 const Drawer = createDrawerNavigator();
 
 export default function App() {
-  const [categories, setCategories] = useState([
-    {
-      name: "TEST",
-      color: "red",
-      items: [
-        {
-          id: 1,
-          title: "Bought a bike",
-          location: "LA",
-          date: "1/8/2022",
-          cost: 25,
-        },
-        {
-          id: 2,
-          title: "Bought tickets for DisneyLand",
-          location: "LA",
-          date: "1/8/2022",
-          cost: 500,
-        },
-      ],
-    },
-    {
-      name: "TEST2",
-      color: "blue",
-      items: [
-        {
-          id: 1,
-          title: "Bought a car",
-          location: "LA",
-          date: "1/8/2022",
-          cost: 100,
-        },
-      ],
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
 
-  const AddCategoryHandler = (categoryName, categoryColor) => {
+  const addCategoryHandler = (categoryName, categoryColor) => {
     setCategories((existingCategories) => [
       ...existingCategories,
       { name: categoryName, color: categoryColor, items: [] },
     ]);
+  };
+
+  const addCostHandler = (category, title, amount, location, date) => {
+    setCategories((existingCategories) => {
+      const unChangedCategories = existingCategories.filter(
+        (c) => c != category
+      );
+      const modifiedCategory = { ...category };
+      const lastId = Math.max(...modifiedCategory.items.map((cost) => cost.id));
+
+      modifiedCategory.items = [
+        ...category.items,
+        { id: lastId + 1, title, location, date, cost: amount },
+      ];
+      console.log(modifiedCategory);
+      return [...unChangedCategories, modifiedCategory];
+    });
   };
 
   return (
@@ -61,15 +44,15 @@ export default function App() {
         <Drawer.Screen name={Names.screens.home}>
           {(props) => (
             <HomeScreen
-              categories={categories}
-              onAddCategory={AddCategoryHandler}
               {...props}
+              categories={categories}
+              onAddCategory={addCategoryHandler}
             />
           )}
         </Drawer.Screen>
 
         <Drawer.Screen name={Names.screens.history}>
-          {(props) => <HistoryScreen categories={categories} />}
+          {(props) => <HistoryScreen {...props} categories={categories} />}
         </Drawer.Screen>
 
         {categories.map((c) => (
@@ -77,7 +60,13 @@ export default function App() {
             name={c.name}
             options={{ drawerItemStyle: { backgroundColor: c.color } }}
           >
-            {(props) => <CategoryScreen category={c} />}
+            {(props) => (
+              <CategoryScreen
+                {...props}
+                category={c}
+                onAddCost={addCostHandler}
+              />
+            )}
           </Drawer.Screen>
         ))}
       </Drawer.Navigator>

@@ -12,6 +12,16 @@ const AddCategoryModal = (props) => {
     Colors.defaultCategoryColor
   );
   const [categoryName, setCategoryName] = useState("");
+  const [categoryNameBorderColor, setCategoryNameBorderColor] =
+    useState("black");
+
+  const categoryAddHandler = () => {
+    if (categoryName.trim().length === 0) {
+      setCategoryNameBorderColor("red");
+      return;
+    }
+    props.onAddCategory(categoryName, selectedColor);
+  };
 
   return (
     <Modal
@@ -27,6 +37,7 @@ const AddCategoryModal = (props) => {
         <View style={styles.colorWrapper}>
           <TextBox
             placeholder="Category Name"
+            style={{ borderColor: categoryNameBorderColor }}
             onChangeText={(text) => setCategoryName(text)}
           />
 
@@ -42,9 +53,7 @@ const AddCategoryModal = (props) => {
           onChangeColor={(color) => setSelectedColor(color)}
         />
         <View style={styles.buttonsContainer}>
-          <CTButton
-            onPress={() => props.onAddCategory(categoryName, selectedColor)}
-          >
+          <CTButton onPress={categoryAddHandler}>
             <Text>Add</Text>
           </CTButton>
           <CTButton

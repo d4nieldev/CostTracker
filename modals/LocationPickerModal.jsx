@@ -6,12 +6,12 @@ import CTButton from "../components/CTButton";
 
 const LocationPickerModal = (props) => {
   const [selectedLocation, setSelectedLocation] = useState(
-    props.currentLocation.coords
+    props.currentLocation
   );
 
   const closeModal = () => {
+    setSelectedLocation(props.currentLocation);
     props.onCancel();
-    setSelectedLocation(props.currentLocation.coords);
   };
 
   return (
@@ -22,8 +22,8 @@ const LocationPickerModal = (props) => {
     >
       <MapView
         initialRegion={{
-          latitude: props.currentLocation.coords.latitude,
-          longitude: props.currentLocation.coords.longitude,
+          latitude: props.currentLocation.latitude,
+          longitude: props.currentLocation.longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
         }}

@@ -4,11 +4,16 @@ import Cost from "../components/Cost";
 import CTButton from "../components/CTButton";
 import AddCostModal from "../modals/AddCostModal";
 
-const CategoryScreen = ({ category }) => {
+const CategoryScreen = ({ category, onAddCost }) => {
   const [isAddCostVisible, setIsAddCostVisible] = useState(false);
 
   const renderCosts = (item) => {
     return <Cost cost={item} />;
+  };
+
+  const addCostHandler = (title, amount, location, date) => {
+    onAddCost(category, title, amount, location, date);
+    setIsAddCostVisible(false);
   };
 
   return (
@@ -27,7 +32,9 @@ const CategoryScreen = ({ category }) => {
         visible={isAddCostVisible}
         onCancel={() => setIsAddCostVisible(false)}
         category={category}
-        onAdd={() => console.log("Adding cost")}
+        onAdd={(title, amount, location, date) =>
+          addCostHandler(title, amount, location, date)
+        }
       />
     </View>
   );

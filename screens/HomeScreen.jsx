@@ -28,7 +28,7 @@ const HomeScreen = ({
     );
   };
 
-  const HandleAddCategory = (categoryName, selectedColor) => {
+  const addCategoryHandler = (categoryName, selectedColor) => {
     onAddCategory(categoryName, selectedColor);
     setIsAddCategoryVisible(false);
   };
@@ -47,7 +47,7 @@ const HomeScreen = ({
 
       <AddCategoryModal
         visible={isAddCategoryVisible}
-        onAddCategory={HandleAddCategory}
+        onAddCategory={addCategoryHandler}
         onCancel={() => setIsAddCategoryVisible(false)}
       />
 
