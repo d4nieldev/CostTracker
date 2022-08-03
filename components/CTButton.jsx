@@ -3,7 +3,7 @@ import Colors from "../constants/Colors";
 
 const CTButton = (props) => {
   return (
-    <TouchableOpacity style={{ ...styles.button, ...props.style }} {...props}>
+    <TouchableOpacity {...props} style={{ ...styles.button, ...props.style }}>
       {props.children}
     </TouchableOpacity>
   );

@@ -1,12 +1,12 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
 
-const Cost = ({ category, cost, onShowHistory }) => {
+const SumCosts = ({ category, sum, onShowHistory }) => {
   return (
     <View style={styles.screen}>
       <Text style={styles.spentText}>Spent {category}</Text>
       <TouchableOpacity style={styles.cost} onPress={onShowHistory}>
-        <Text>{cost}</Text>
+        <Text>{sum}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Cost;
+export default SumCosts;

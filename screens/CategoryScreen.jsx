@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 
-const HomeScreen = ({ route, navigation }) => {
-  return <Text>This is {route.params.category} screen!</Text>;
+const HomeScreen = ({ navigation, category }) => {
+  return <Text>This is {category.name} screen!</Text>;
 };
 
 export default HomeScreen;
