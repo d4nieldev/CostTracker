@@ -35,8 +35,8 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
     );
   };
 
-  const addCostHandler = (title, amount, location, date) => {
-    onAddCost(category, title, amount, location, date);
+  const addCostHandler = (title, amount, location, date, type) => {
+    onAddCost(category, title, amount, location, date, type);
     setIsAddCostVisible(false);
   };
 
@@ -71,8 +71,8 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
         visible={isAddCostVisible}
         onCancel={() => setIsAddCostVisible(false)}
         category={category}
-        onAdd={(title, amount, location, date) =>
-          addCostHandler(title, amount, location, date)
+        onAdd={(title, amount, location, date, type) =>
+          addCostHandler(title, amount, location, date, type)
         }
       />
     </View>

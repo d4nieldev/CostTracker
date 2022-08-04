@@ -72,7 +72,7 @@ export default function App() {
     });
   };
 
-  const addCostHandler = (category, title, amount, location, date) => {
+  const addCostHandler = (category, title, amount, location, date, type) => {
     setCategories((existingCategories) => {
       const unChangedCategories = existingCategories.filter(
         (c) => c != category
@@ -85,7 +85,7 @@ export default function App() {
 
       modifiedCategory.items = [
         ...category.items,
-        { id: lastId + 1, title, location, date, cost: amount },
+        { id: lastId + 1, title, location, date, cost: amount, type },
       ];
       modifiedCategory.items.sort(compareObjects);
       const output = [...unChangedCategories, modifiedCategory];

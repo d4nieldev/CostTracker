@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Button,
 } from "react-native";
 import LargeText from "../components/LargeText";
 import TextBox from "../components/TextBox";
@@ -14,6 +15,7 @@ import CTButton from "../components/CTButton";
 import * as Location from "expo-location";
 import LocationPickerModal from "./LocationPickerModal";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import CostTypePicker from "../components/CostTypePicker";
 
 const AddCostModal = (props) => {
   const [costTitle, setCostTitle] = useState("");
@@ -27,6 +29,7 @@ const AddCostModal = (props) => {
     latitude: 0,
     longitude: 0,
   });
+  const [costType, setCostType] = useState("General");
 
   // fetch location
   const [location, setLocation] = useState({
@@ -34,6 +37,27 @@ const AddCostModal = (props) => {
     longitude: 0,
   });
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const closeModal = () => {
+    setCostTitle("");
+    setCostTitleBorderColor("");
+    setCostAmount(0);
+    setCostAmountBorderColor("black");
+    setIsLocationPickerVisible(false);
+    setIsDateTimePickerVisible(false);
+    setCostDate(new Date());
+    setStartLocation({
+      latitude: 0,
+      longitude: 0,
+    });
+    setCostType("General");
+    setLocation({
+      latitude: 0,
+      longitude: 0,
+    });
+    setErrorMsg(null);
+    props.onCancel();
+  };
 
   useEffect(() => {
     (async () => {
@@ -68,7 +92,7 @@ const AddCostModal = (props) => {
     } else setCostAmountBorderColor("black");
 
     if (!errorOccured) {
-      props.onAdd(costTitle, costAmount, location, costDate);
+      props.onAdd(costTitle, costAmount, location, costDate, costType);
       resetFields();
     }
   };
@@ -88,7 +112,7 @@ const AddCostModal = (props) => {
   return (
     <Modal
       visible={props.visible}
-      onRequestClose={props.onCancel}
+      onRequestClose={closeModal}
       animationType="slide"
     >
       <View style={styles.screen}>
@@ -126,7 +150,26 @@ const AddCostModal = (props) => {
           onSetLocation={(newLocation) => setLocationHandler(newLocation)}
           markerTitle="Transaction Location"
         />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <CostTypePicker
+            oldTypes={[
+              {
+                id: 0,
+                name: "Add New",
+              },
+              ...props.category.items.reduce((result, item) => {
+                if (!result.includes(item.type))
+                  result = [
+                    ...result,
+                    { id: result.length + 1, name: item.type },
+                  ];
+              }, []),
+            ]}
+            onChoose={(chosenType) => setCostType(chosenType)}
+          />
 
+          <LargeText>{costType}</LargeText>
+        </View>
         <View
           style={{ flexDirection: "row", alignItems: "center", width: "80%" }}
         >
@@ -157,7 +200,7 @@ const AddCostModal = (props) => {
           </CTButton>
           <CTButton
             onPress={() => {
-              props.onCancel();
+              closeModal();
               resetFields();
             }}
             style={{ backgroundColor: "red" }}
