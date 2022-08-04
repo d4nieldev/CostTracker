@@ -99,13 +99,21 @@ export default function App() {
     });
   };
 
-  const editCostHandler = (categoryId, costId, title, cost, location, date) => {
+  const editCostHandler = (
+    categoryId,
+    costId,
+    title,
+    cost,
+    location,
+    date,
+    type
+  ) => {
     setCategories((existingCategories) => {
       const categoryToEdit = existingCategories.find(
         (c) => c.id === categoryId
       );
       let costToEdit = categoryToEdit.items.find((c) => c.id === costId);
-      costToEdit = { id: costId, title, location, date, cost };
+      costToEdit = { id: costId, title, location, date, cost, type };
       categoryToEdit.items = [
         ...categoryToEdit.items.filter((c) => c.id !== costId),
         costToEdit,

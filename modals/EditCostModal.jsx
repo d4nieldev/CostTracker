@@ -5,8 +5,10 @@ import CTButton from "../components/CTButton";
 import TextBox from "../components/TextBox";
 import LocationPickerModal from "./LocationPickerModal";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import CostTypePicker from "../components/CostTypePicker";
+import LargeText from "../components/LargeText";
 
-const EditCostModal = ({ visible, cost, onClose, onEdit }) => {
+const EditCostModal = ({ visible, cost, onClose, onEdit, category }) => {
   if (!cost) return <></>;
   const [title, setTitle] = useState(cost.title);
   const [amount, setAmount] = useState(cost.cost);
@@ -14,6 +16,7 @@ const EditCostModal = ({ visible, cost, onClose, onEdit }) => {
   const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
   const [date, setDate] = useState(cost.date);
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
+  const [costType, setCostType] = useState(cost.type);
 
   return (
     <>
@@ -28,6 +31,7 @@ const EditCostModal = ({ visible, cost, onClose, onEdit }) => {
           setIsLocationPickerVisible(false);
           setDate(cost.date);
           setIsDateTimePickerVisible(false);
+          setCostType(cost.type);
         }}
       >
         <View style={{ alignItems: "center", margin: 30 }}>
@@ -60,6 +64,25 @@ const EditCostModal = ({ visible, cost, onClose, onEdit }) => {
             onSetLocation={(newLocation) => setLocation(newLocation)}
           />
 
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <CostTypePicker
+              oldTypes={[
+                {
+                  id: 0,
+                  name: "Add New",
+                },
+                ...[...new Set(category.items.map((item) => item.type))].map(
+                  (item, index) => {
+                    return { id: index + 1, name: item };
+                  }
+                ),
+              ]}
+              onChoose={(chosenType) => setCostType(chosenType)}
+            />
+
+            <LargeText>{costType}</LargeText>
+          </View>
+
           <CTButton onPress={() => setIsDateTimePickerVisible(true)}>
             <Text>Select New Date</Text>
           </CTButton>
@@ -77,7 +100,7 @@ const EditCostModal = ({ visible, cost, onClose, onEdit }) => {
             <CTButton
               title="Confirm"
               onPress={() => {
-                onEdit(title, amount, location, date);
+                onEdit(title, amount, location, date, costType);
                 onClose();
               }}
             >
