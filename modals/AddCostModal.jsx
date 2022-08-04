@@ -23,6 +23,10 @@ const AddCostModal = (props) => {
   const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [costDate, setCostDate] = useState(new Date());
+  const [startLocation, setStartLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   // fetch location
   const [location, setLocation] = useState({
@@ -30,7 +34,6 @@ const AddCostModal = (props) => {
     longitude: 0,
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  let startLocation = {};
 
   useEffect(() => {
     (async () => {
@@ -43,7 +46,7 @@ const AddCostModal = (props) => {
         coords: { latitude, longitude },
       } = await Location.getLastKnownPositionAsync();
       setLocation({ latitude, longitude });
-      startLocation = { latitude, longitude };
+      setStartLocation({ latitude, longitude });
     })();
   }, []);
 
@@ -115,11 +118,13 @@ const AddCostModal = (props) => {
         >
           <Text>Pick Location (Optinal)</Text>
         </CTButton>
+
         <LocationPickerModal
           visible={isLocationPickerVisible}
           onCancel={() => setIsLocationPickerVisible(false)}
           currentLocation={location}
           onSetLocation={(newLocation) => setLocationHandler(newLocation)}
+          markerTitle="Transaction Location"
         />
 
         <View

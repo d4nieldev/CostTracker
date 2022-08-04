@@ -19,6 +19,7 @@ const LocationPickerModal = (props) => {
       visible={props.visible}
       animationType="fade"
       onRequestClose={closeModal}
+      onShow={() => setSelectedLocation(props.currentLocation)}
     >
       <MapView
         initialRegion={{
@@ -32,7 +33,7 @@ const LocationPickerModal = (props) => {
           setSelectedLocation(e.nativeEvent.coordinate);
         }}
       >
-        <Marker title="Transaction Location" coordinate={selectedLocation}>
+        <Marker title={props.markerTitle} coordinate={selectedLocation}>
           <Image
             source={require("../assets/location.png")}
             style={{ width: 50, height: 50 }}

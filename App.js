@@ -15,10 +15,16 @@ export default function App() {
   const [categories, setCategories] = useState([]);
 
   const addCategoryHandler = (categoryName, categoryColor) => {
-    setCategories((existingCategories) => [
-      ...existingCategories,
-      { name: categoryName, color: categoryColor, items: [] },
-    ]);
+    setCategories((existingCategories) => {
+      const lastId =
+        existingCategories.length !== 0
+          ? Math.max(...existingCategories.map((c) => c.id))
+          : 0;
+      return [
+        ...existingCategories,
+        { id: lastId + 1, name: categoryName, color: categoryColor, items: [] },
+      ];
+    });
   };
 
   const addCostHandler = (category, title, amount, location, date) => {
@@ -27,14 +33,31 @@ export default function App() {
         (c) => c != category
       );
       const modifiedCategory = { ...category };
-      const lastId = Math.max(...modifiedCategory.items.map((cost) => cost.id));
+      const lastId =
+        modifiedCategory.items.length !== 0
+          ? Math.max(...modifiedCategory.items.map((cost) => cost.id))
+          : 0;
 
       modifiedCategory.items = [
         ...category.items,
         { id: lastId + 1, title, location, date, cost: amount },
       ];
-      console.log(modifiedCategory);
       return [...unChangedCategories, modifiedCategory];
+    });
+  };
+
+  const deleteCostHandler = (categoryId, costId) => {
+    setCategories((existingCategories) => {
+      let categoryToDeleteFrom = existingCategories.find(
+        (c) => c.id === categoryId
+      );
+      categoryToDeleteFrom.items = categoryToDeleteFrom.items.filter(
+        (c) => c.id !== costId
+      );
+      return [
+        ...existingCategories.filter((c) => c.id !== categoryId),
+        categoryToDeleteFrom,
+      ];
     });
   };
 
@@ -59,12 +82,14 @@ export default function App() {
           <Drawer.Screen
             name={c.name}
             options={{ drawerItemStyle: { backgroundColor: c.color } }}
+            key={c.id}
           >
             {(props) => (
               <CategoryScreen
                 {...props}
                 category={c}
                 onAddCost={addCostHandler}
+                onDeleteCost={deleteCostHandler}
               />
             )}
           </Drawer.Screen>

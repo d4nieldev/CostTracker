@@ -1,14 +1,45 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import CTButton from "./CTButton";
 
-const Cost = ({ cost }) => {
+const Cost = ({ cost, onViewLocation, onDelete, onEdit }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.itemTitle}>{cost.title}</Text>
       <View>
-        <Text style={styles.detailItem}>{cost.location.latitude}</Text>
-        <Text style={styles.detailItem}>{cost.location.longitude}</Text>
+        <Text style={styles.itemTitle}>{cost.title}</Text>
+        <TouchableOpacity onPress={() => onViewLocation(cost.location)}>
+          <Text>See transaction location on map</Text>
+        </TouchableOpacity>
         <Text style={styles.detailItem}>{cost.date.toDateString()}</Text>
         <Text style={styles.detailItem}>{cost.cost}</Text>
+      </View>
+      <View>
+        {onDelete ? (
+          <CTButton
+            style={{ backgroundColor: "red" }}
+            onPress={() => onDelete(cost.id)}
+          >
+            <Image
+              source={require("../assets/delete.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </CTButton>
+        ) : (
+          <Text />
+        )}
+
+        {onEdit ? (
+          <CTButton
+            style={{ backgroundColor: "grey" }}
+            onPress={() => onEdit()}
+          >
+            <Image
+              source={require("../assets/edit.png")}
+              style={{ width: 20, height: 20 }}
+            />
+          </CTButton>
+        ) : (
+          <Text />
+        )}
       </View>
     </View>
   );
@@ -17,7 +48,8 @@ const Cost = ({ cost }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 10,
     borderWidth: 1,
     borderColor: "black",
