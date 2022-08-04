@@ -6,13 +6,17 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "./screens/HomeScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import Names from "./constants/Names";
-import { Button } from "react-native";
 import CategoryScreen from "./screens/CategoryScreen";
+import CTButton from "./components/CTButton";
+import { Image, Text, View } from "react-native";
+import EditCategoryModal from "./modals/EditCategoryModal";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [categories, setCategories] = useState([]);
+  const [isEditCategoryVisible, setIsEditCategoryVisible] = useState(false);
+  const [editedCategory, setEditedCategory] = useState();
 
   const compareObjects = (a, b) => a.id < b.id;
 
@@ -29,6 +33,25 @@ export default function App() {
       output.sort(compareObjects);
       return output;
     });
+  };
+
+  const editCategoryHandler = (categoryName, categoryColor) => {
+    setCategories((existingCategories) => {
+      const otherCategories = existingCategories.filter(
+        (c) => c !== editedCategory
+      );
+      editedCategory.name = categoryName;
+      editedCategory.color = categoryColor;
+      const output = [...otherCategories, editedCategory];
+      output.sort();
+      return output;
+    });
+  };
+
+  const DeleteCategoryHandler = (categoryToRemove) => {
+    setCategories((existingCategories) =>
+      existingCategories.filter((c) => c !== categoryToRemove)
+    );
   };
 
   const addCostHandler = (category, title, amount, location, date) => {
@@ -112,7 +135,34 @@ export default function App() {
         {categories.map((c) => (
           <Drawer.Screen
             name={c.name}
-            options={{ drawerItemStyle: { backgroundColor: c.color } }}
+            options={{
+              drawerItemStyle: { backgroundColor: c.color },
+              headerRight: () => (
+                <View style={{ flexDirection: "row" }}>
+                  <CTButton
+                    style={{ backgroundColor: "grey", width: 40, height: 40 }}
+                    onPress={() => {
+                      setEditedCategory(c);
+                      setIsEditCategoryVisible(true);
+                    }}
+                  >
+                    <Image
+                      source={require("./assets/edit.png")}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </CTButton>
+                  <CTButton
+                    style={{ backgroundColor: "red", width: 40, height: 40 }}
+                    onPress={() => DeleteCategoryHandler(c)}
+                  >
+                    <Image
+                      source={require("./assets/delete.png")}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </CTButton>
+                </View>
+              ),
+            }}
             key={c.id}
           >
             {(props) => (
@@ -127,6 +177,13 @@ export default function App() {
           </Drawer.Screen>
         ))}
       </Drawer.Navigator>
+
+      <EditCategoryModal
+        visible={isEditCategoryVisible}
+        category={editedCategory}
+        onCancel={() => setIsEditCategoryVisible(false)}
+        onEditCategory={(title, color) => editCategoryHandler(title, color)}
+      />
     </NavigationContainer>
   );
 }
