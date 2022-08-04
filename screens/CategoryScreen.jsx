@@ -6,7 +6,7 @@ import AddCostModal from "../modals/AddCostModal";
 import LocationPickerModal from "../modals/LocationPickerModal";
 import EditCostModal from "../modals/EditCostModal";
 
-const CategoryScreen = ({ category, onAddCost, onDeleteCost }) => {
+const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
   const [isAddCostVisible, setIsAddCostVisible] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [locationToView, setLocationToView] = useState({
@@ -15,18 +15,7 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost }) => {
   });
   const [costTitleToView, setCostTitleToView] = useState("");
   const [editCostVisible, setEditCostVisible] = useState(false);
-  const [editedCostModal, setEditedCostModal] = useState();
-
-  const renderLocationModal = () => {
-    return (
-      <LocationPickerModal
-        visible={isMapVisible}
-        currentLocation={locationToView}
-        onCancel={() => setIsMapVisible(false)}
-        markerTitle={costTitleToView}
-      />
-    );
-  };
+  const [editedCost, setEditedCost] = useState();
 
   const renderCosts = (item) => {
     return (
@@ -40,9 +29,7 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost }) => {
         onDelete={(id) => onDeleteCost(category.id, id)}
         onEdit={() => {
           setEditCostVisible(true);
-          setEditedCostModal(
-            <EditCostModal visible={editCostVisible} cost={item} />
-          );
+          setEditedCost(item);
         }}
       />
     );
@@ -64,10 +51,21 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost }) => {
       <CTButton onPress={() => setIsAddCostVisible(true)}>
         <Text>+</Text>
       </CTButton>
+      <LocationPickerModal
+        visible={isMapVisible}
+        currentLocation={locationToView}
+        onCancel={() => setIsMapVisible(false)}
+        markerTitle={costTitleToView}
+      />
 
-      {renderLocationModal()}
-
-      {editedCostModal}
+      <EditCostModal
+        visible={editCostVisible}
+        cost={editedCost}
+        onClose={() => setEditCostVisible(false)}
+        onEdit={(title, cost, location, date) =>
+          onEditCost(category.id, editedCost.id, title, cost, location, date)
+        }
+      />
 
       <AddCostModal
         visible={isAddCostVisible}

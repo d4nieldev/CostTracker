@@ -143,9 +143,7 @@ const AddCostModal = (props) => {
         </View>
         {isDateTimePickerVisible && (
           <DateTimePicker
-            testID="dateTimePicker"
             value={costDate}
-            is24Hour={true}
             onChange={(event, selectedDate) =>
               changeDateHandler(event, selectedDate)
             }

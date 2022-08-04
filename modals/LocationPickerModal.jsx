@@ -4,27 +4,31 @@ import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import CTButton from "../components/CTButton";
 
-const LocationPickerModal = (props) => {
-  const [selectedLocation, setSelectedLocation] = useState(
-    props.currentLocation
-  );
+const LocationPickerModal = ({
+  currentLocation,
+  onCancel,
+  visible,
+  markerTitle,
+  onSetLocation,
+}) => {
+  const [selectedLocation, setSelectedLocation] = useState(currentLocation);
 
   const closeModal = () => {
-    setSelectedLocation(props.currentLocation);
-    props.onCancel();
+    setSelectedLocation(currentLocation);
+    onCancel();
   };
 
   return (
     <Modal
-      visible={props.visible}
+      visible={visible}
       animationType="fade"
       onRequestClose={closeModal}
-      onShow={() => setSelectedLocation(props.currentLocation)}
+      onShow={() => setSelectedLocation(currentLocation)}
     >
       <MapView
         initialRegion={{
-          latitude: props.currentLocation.latitude,
-          longitude: props.currentLocation.longitude,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
         }}
@@ -33,7 +37,7 @@ const LocationPickerModal = (props) => {
           setSelectedLocation(e.nativeEvent.coordinate);
         }}
       >
-        <Marker title={props.markerTitle} coordinate={selectedLocation}>
+        <Marker title={markerTitle} coordinate={selectedLocation}>
           <Image
             source={require("../assets/location.png")}
             style={{ width: 50, height: 50 }}
@@ -42,7 +46,12 @@ const LocationPickerModal = (props) => {
         </Marker>
       </MapView>
       <View style={styles.buttonContainer}>
-        <CTButton onPress={() => props.onSetLocation(selectedLocation)}>
+        <CTButton
+          onPress={() => {
+            onSetLocation(selectedLocation);
+            onCancel();
+          }}
+        >
           <Text>Confirm</Text>
         </CTButton>
         <CTButton onPress={closeModal} style={{ backgroundColor: "red" }}>

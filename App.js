@@ -46,6 +46,24 @@ export default function App() {
     });
   };
 
+  const editCostHandler = (categoryId, costId, title, cost, location, date) => {
+    setCategories((existingCategories) => {
+      const categoryToEdit = existingCategories.find(
+        (c) => c.id === categoryId
+      );
+      let costToEdit = categoryToEdit.items.find((c) => c.id === costId);
+      costToEdit = { id: costId, title, location, date, cost };
+      categoryToEdit.items = [
+        ...categoryToEdit.items.filter((c) => c.id !== costId),
+        costToEdit,
+      ];
+      return [
+        ...existingCategories.filter((c) => c.id != categoryId),
+        categoryToEdit,
+      ];
+    });
+  };
+
   const deleteCostHandler = (categoryId, costId) => {
     setCategories((existingCategories) => {
       let categoryToDeleteFrom = existingCategories.find(
@@ -90,6 +108,7 @@ export default function App() {
                 category={c}
                 onAddCost={addCostHandler}
                 onDeleteCost={deleteCostHandler}
+                onEditCost={editCostHandler}
               />
             )}
           </Drawer.Screen>
