@@ -14,16 +14,20 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [categories, setCategories] = useState([]);
 
+  const compareObjects = (a, b) => a.id < b.id;
+
   const addCategoryHandler = (categoryName, categoryColor) => {
     setCategories((existingCategories) => {
       const lastId =
         existingCategories.length !== 0
           ? Math.max(...existingCategories.map((c) => c.id))
           : 0;
-      return [
+      const output = [
         ...existingCategories,
         { id: lastId + 1, name: categoryName, color: categoryColor, items: [] },
       ];
+      output.sort(compareObjects);
+      return output;
     });
   };
 
@@ -42,7 +46,10 @@ export default function App() {
         ...category.items,
         { id: lastId + 1, title, location, date, cost: amount },
       ];
-      return [...unChangedCategories, modifiedCategory];
+      modifiedCategory.items.sort(compareObjects);
+      const output = [...unChangedCategories, modifiedCategory];
+      output.sort(compareObjects);
+      return output;
     });
   };
 
@@ -57,10 +64,13 @@ export default function App() {
         ...categoryToEdit.items.filter((c) => c.id !== costId),
         costToEdit,
       ];
-      return [
+      categoryToEdit.items.sort(compareObjects);
+      const output = [
         ...existingCategories.filter((c) => c.id != categoryId),
         categoryToEdit,
       ];
+      output.sort();
+      return output;
     });
   };
 
@@ -72,10 +82,13 @@ export default function App() {
       categoryToDeleteFrom.items = categoryToDeleteFrom.items.filter(
         (c) => c.id !== costId
       );
-      return [
+      categoryToDeleteFrom.items.sort(compareObjects);
+      const output = [
         ...existingCategories.filter((c) => c.id !== categoryId),
         categoryToDeleteFrom,
       ];
+      output.sort();
+      return output;
     });
   };
 
