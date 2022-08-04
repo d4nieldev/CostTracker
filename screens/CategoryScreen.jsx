@@ -71,9 +71,7 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
         visible={isAddCostVisible}
         onCancel={() => setIsAddCostVisible(false)}
         category={category}
-        onAdd={(title, amount, location, date, type) =>
-          addCostHandler(title, amount, location, date, type)
-        }
+        onAdd={addCostHandler}
       />
     </View>
   );

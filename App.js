@@ -77,7 +77,9 @@ export default function App() {
       const unChangedCategories = existingCategories.filter(
         (c) => c != category
       );
+
       const modifiedCategory = { ...category };
+
       const lastId =
         modifiedCategory.items.length !== 0
           ? Math.max(...modifiedCategory.items.map((cost) => cost.id))
@@ -87,10 +89,12 @@ export default function App() {
         ...category.items,
         { id: lastId + 1, title, location, date, cost: amount, type },
       ];
+
       modifiedCategory.items.sort(compareObjects);
       const output = [...unChangedCategories, modifiedCategory];
       output.sort(compareObjects);
       presistData(output);
+
       return output;
     });
   };

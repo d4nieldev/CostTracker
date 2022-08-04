@@ -11,6 +11,7 @@ const Cost = ({ cost, onViewLocation, onDelete, onEdit }) => {
         </TouchableOpacity>
         <Text style={styles.detailItem}>{cost.date.toDateString()}</Text>
         <Text style={styles.detailItem}>{cost.cost}</Text>
+        <Text style={styles.detailItem}>{cost.type}</Text>
       </View>
       <View>
         {onDelete ? (

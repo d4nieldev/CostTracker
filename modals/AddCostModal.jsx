@@ -39,23 +39,7 @@ const AddCostModal = (props) => {
   const [errorMsg, setErrorMsg] = useState(null);
 
   const closeModal = () => {
-    setCostTitle("");
-    setCostTitleBorderColor("");
-    setCostAmount(0);
-    setCostAmountBorderColor("black");
-    setIsLocationPickerVisible(false);
-    setIsDateTimePickerVisible(false);
-    setCostDate(new Date());
-    setStartLocation({
-      latitude: 0,
-      longitude: 0,
-    });
-    setCostType("General");
-    setLocation({
-      latitude: 0,
-      longitude: 0,
-    });
-    setErrorMsg(null);
+    resetFields();
     props.onCancel();
   };
 
@@ -99,9 +83,22 @@ const AddCostModal = (props) => {
 
   const resetFields = () => {
     setCostTitle("");
+    setCostTitleBorderColor("");
     setCostAmount(0);
-    setLocation(startLocation);
+    setCostAmountBorderColor("black");
+    setIsLocationPickerVisible(false);
+    setIsDateTimePickerVisible(false);
     setCostDate(new Date());
+    setStartLocation({
+      latitude: 0,
+      longitude: 0,
+    });
+    setCostType("General");
+    setLocation({
+      latitude: 0,
+      longitude: 0,
+    });
+    setErrorMsg(null);
   };
 
   const setLocationHandler = (newLocation) => {
@@ -157,13 +154,11 @@ const AddCostModal = (props) => {
                 id: 0,
                 name: "Add New",
               },
-              ...props.category.items.reduce((result, item) => {
-                if (!result.includes(item.type))
-                  result = [
-                    ...result,
-                    { id: result.length + 1, name: item.type },
-                  ];
-              }, []),
+              ...[
+                ...new Set(props.category.items.map((item) => item.type)),
+              ].map((item, index) => {
+                return { id: index + 1, name: item };
+              }),
             ]}
             onChoose={(chosenType) => setCostType(chosenType)}
           />
@@ -199,10 +194,7 @@ const AddCostModal = (props) => {
             <Text>Add</Text>
           </CTButton>
           <CTButton
-            onPress={() => {
-              closeModal();
-              resetFields();
-            }}
+            onPress={() => closeModal()}
             style={{ backgroundColor: "red" }}
           >
             <Text>Cancel</Text>
