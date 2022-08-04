@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from "./screens/HomeScreen";
@@ -8,13 +8,27 @@ import HistoryScreen from "./screens/HistoryScreen";
 import Names from "./constants/Names";
 import CategoryScreen from "./screens/CategoryScreen";
 import CTButton from "./components/CTButton";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, AsyncStorageStatic } from "react-native";
 import EditCategoryModal from "./modals/EditCategoryModal";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
   const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const value = await AsyncStorageStatic.getItem("categories");
+      if (value !== null) setCategories(value);
+    })();
+  }, []);
+
+  const presistData = (newData) => {
+    async () => {
+      await AsyncStorageStatic.setItem("categories", newData);
+    };
+  };
+
   const [isEditCategoryVisible, setIsEditCategoryVisible] = useState(false);
   const [editedCategory, setEditedCategory] = useState();
 
@@ -31,6 +45,7 @@ export default function App() {
         { id: lastId + 1, name: categoryName, color: categoryColor, items: [] },
       ];
       output.sort(compareObjects);
+      presistData(output);
       return output;
     });
   };
@@ -44,14 +59,17 @@ export default function App() {
       editedCategory.color = categoryColor;
       const output = [...otherCategories, editedCategory];
       output.sort();
+      presistData(output);
       return output;
     });
   };
 
   const DeleteCategoryHandler = (categoryToRemove) => {
-    setCategories((existingCategories) =>
-      existingCategories.filter((c) => c !== categoryToRemove)
-    );
+    setCategories((existingCategories) => {
+      const output = existingCategories.filter((c) => c !== categoryToRemove);
+      presistData(output);
+      return output;
+    });
   };
 
   const addCostHandler = (category, title, amount, location, date) => {
@@ -72,6 +90,7 @@ export default function App() {
       modifiedCategory.items.sort(compareObjects);
       const output = [...unChangedCategories, modifiedCategory];
       output.sort(compareObjects);
+      presistData(output);
       return output;
     });
   };
@@ -93,6 +112,7 @@ export default function App() {
         categoryToEdit,
       ];
       output.sort();
+      presistData(output);
       return output;
     });
   };
@@ -111,6 +131,7 @@ export default function App() {
         categoryToDeleteFrom,
       ];
       output.sort();
+      presistData(output);
       return output;
     });
   };
