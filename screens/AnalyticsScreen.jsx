@@ -4,6 +4,7 @@ import { Text as SVGText } from "react-native-svg";
 import { useEffect, useState } from "react";
 import AnalyticsChoose from "../components/AnalyticsChoose";
 import { Text } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
 const AnalyticsScreen = ({ categories }) => {
   const [groupByValue, setGroupByValue] = useState(1);
@@ -199,19 +200,23 @@ const AnalyticsScreen = ({ categories }) => {
       </PieChart>
 
       <View style={{ width: "50%", marginTop: 20 }}>
-        {data.map((item) => (
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                backgroundColor: item.svg.fill,
-                width: 20,
-                height: 20,
-                marginRight: 5,
-              }}
-            />
-            <Text style={{ fontSize: 20 }}>{item.key}</Text>
-          </View>
-        ))}
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  backgroundColor: item.svg.fill,
+                  width: 20,
+                  height: 20,
+                  marginRight: 5,
+                }}
+              />
+              <Text style={{ fontSize: 20 }}>{item.key}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.key}
+        />
       </View>
     </View>
   );
