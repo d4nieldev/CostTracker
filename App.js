@@ -8,67 +8,20 @@ import HistoryScreen from "./screens/HistoryScreen";
 import Names from "./constants/Names";
 import CategoryScreen from "./screens/CategoryScreen";
 import CTButton from "./components/CTButton";
-import { Image, Text, View, AsyncStorageStatic } from "react-native";
+import { Image, Text, View } from "react-native";
 import EditCategoryModal from "./modals/EditCategoryModal";
 import AnalyticsScreen from "./screens/AnalyticsScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
-  const [categories, setCategories] = useState([
-    {
-      color: "#d19b92",
-      id: 2,
-      items: [
-        {
-          cost: 250,
-          date: new Date("2022-08-05T15:03:34.880Z"),
-          id: 1,
-          location: {
-            latitude: 42.62325517157415,
-            longitude: -76.00486636161804,
-          },
-          title: "Burger King",
-          type: "Food",
-        },
-      ],
-      name: "Category #2",
-    },
-    {
-      color: "#92A8D1",
-      id: 1,
-      items: [
-        {
-          cost: 100,
-          date: new Date("2022-08-05T15:02:18.996Z"),
-          id: 2,
-          location: {
-            latitude: 42.61759849334061,
-            longitude: -75.90327735990286,
-          },
-          title: "Donuts",
-          type: "Food",
-        },
-        {
-          cost: 20000,
-          date: new Date("2022-08-05T15:01:10.693Z"),
-          id: 1,
-          location: {
-            latitude: 31.9143989,
-            longitude: 34.7896168,
-          },
-          title: "TA -> NYC",
-          type: "Flights",
-        },
-      ],
-      name: "Category #1",
-    },
-  ]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        const value = await AsyncStorageStatic.getItem("categories");
+        const value = await AsyncStorage.getItem("categories");
         if (value != null) setCategories(value);
       } catch (error) {}
     })();
@@ -76,7 +29,7 @@ export default function App() {
 
   const presistData = (newData) => {
     async () => {
-      await AsyncStorageStatic.setItem("categories", newData);
+      await AsyncStorage.setItem("categories", newData);
     };
   };
 
