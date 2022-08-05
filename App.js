@@ -67,8 +67,10 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      const value = await AsyncStorageStatic.getItem("categories");
-      if (value !== null) setCategories(value);
+      try {
+        const value = await AsyncStorageStatic.getItem("categories");
+        if (value != null) setCategories(value);
+      } catch (error) {}
     })();
   }, []);
 
