@@ -15,7 +15,13 @@ import LocationPickerModal from "../modals/LocationPickerModal";
 import EditCostModal from "../modals/EditCostModal";
 import { Dropdown } from "react-native-element-dropdown";
 
-const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
+const CategoryScreen = ({
+  category,
+  onAddCost,
+  onDeleteCost,
+  onEditCost,
+  types,
+}) => {
   const [isAddCostVisible, setIsAddCostVisible] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [locationToView, setLocationToView] = useState({
@@ -155,6 +161,7 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
           )
         }
         category={category}
+        types={types}
       />
 
       <AddCostModal
@@ -162,6 +169,7 @@ const CategoryScreen = ({ category, onAddCost, onDeleteCost, onEditCost }) => {
         onCancel={() => setIsAddCostVisible(false)}
         category={category}
         onAdd={addCostHandler}
+        types={types}
       />
     </View>
   );

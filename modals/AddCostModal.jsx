@@ -151,19 +151,16 @@ const AddCostModal = (props) => {
           <CostTypePicker
             oldTypes={[
               {
-                id: 0,
-                name: "Add New",
+                value: 0,
+                label: "Add New",
               },
-              ...[
-                ...new Set(props.category.items.map((item) => item.type)),
-              ].map((item, index) => {
-                return { id: index + 1, name: item };
-              }),
+              ...props.types.map((item, index) => ({
+                value: index + 1,
+                label: item,
+              })),
             ]}
             onChoose={(chosenType) => setCostType(chosenType)}
           />
-
-          <LargeText>{costType}</LargeText>
         </View>
         <View
           style={{ flexDirection: "row", alignItems: "center", width: "80%" }}

@@ -10,11 +10,60 @@ import CategoryScreen from "./screens/CategoryScreen";
 import CTButton from "./components/CTButton";
 import { Image, Text, View, AsyncStorageStatic } from "react-native";
 import EditCategoryModal from "./modals/EditCategoryModal";
+import AnalyticsScreen from "./screens/AnalyticsScreen";
 
 const Drawer = createDrawerNavigator();
 
 export default function App() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+    {
+      color: "#d19b92",
+      id: 2,
+      items: [
+        {
+          cost: 250,
+          date: new Date("2022-08-05T15:03:34.880Z"),
+          id: 1,
+          location: {
+            latitude: 42.62325517157415,
+            longitude: -76.00486636161804,
+          },
+          title: "Burger King",
+          type: "Food",
+        },
+      ],
+      name: "Category #2",
+    },
+    {
+      color: "#92A8D1",
+      id: 1,
+      items: [
+        {
+          cost: 100,
+          date: new Date("2022-08-05T15:02:18.996Z"),
+          id: 2,
+          location: {
+            latitude: 42.61759849334061,
+            longitude: -75.90327735990286,
+          },
+          title: "Donuts",
+          type: "Food",
+        },
+        {
+          cost: 20000,
+          date: new Date("2022-08-05T15:01:10.693Z"),
+          id: 1,
+          location: {
+            latitude: 31.9143989,
+            longitude: 34.7896168,
+          },
+          title: "TA -> NYC",
+          type: "Flights",
+        },
+      ],
+      name: "Category #1",
+    },
+  ]);
 
   useEffect(() => {
     (async () => {
@@ -165,6 +214,10 @@ export default function App() {
           {(props) => <HistoryScreen {...props} categories={categories} />}
         </Drawer.Screen>
 
+        <Drawer.Screen name={Names.screens.analytics}>
+          {(props) => <AnalyticsScreen {...props} categories={categories} />}
+        </Drawer.Screen>
+
         {categories.map((c) => (
           <Drawer.Screen
             name={c.name}
@@ -202,6 +255,12 @@ export default function App() {
               <CategoryScreen
                 {...props}
                 category={c}
+                types={categories
+                  .flatMap((c) => c.items)
+                  .reduce((arr, item) => {
+                    if (!arr.includes(item.type)) arr.push(item.type);
+                    return arr;
+                  }, [])}
                 onAddCost={addCostHandler}
                 onDeleteCost={deleteCostHandler}
                 onEditCost={editCostHandler}
