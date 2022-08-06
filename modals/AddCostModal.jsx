@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  ScrollView,
 } from "react-native";
 import LargeText from "../components/LargeText";
 import TextBox from "../components/TextBox";
@@ -16,6 +17,8 @@ import * as Location from "expo-location";
 import LocationPickerModal from "./LocationPickerModal";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import CostTypePicker from "../components/CostTypePicker";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Keyboard } from "react-native";
 
 const AddCostModal = (props) => {
   const [costTitle, setCostTitle] = useState("");
@@ -112,7 +115,10 @@ const AddCostModal = (props) => {
       onRequestClose={closeModal}
       animationType="slide"
     >
-      <View style={styles.screen}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.screen}
+      >
         <LargeText style={{ paddingVertical: 70 }}>
           Add a New Cost to {props.category.name}
         </LargeText>
@@ -182,6 +188,7 @@ const AddCostModal = (props) => {
             onChange={(event, selectedDate) =>
               changeDateHandler(event, selectedDate)
             }
+            style={{ width: 320, backgroundColor: "white" }}
           />
         )}
 
@@ -197,7 +204,7 @@ const AddCostModal = (props) => {
             <Text>Cancel</Text>
           </CTButton>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };

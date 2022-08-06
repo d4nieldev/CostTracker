@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { useState } from "react";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 import DateRangePicker from "react-native-daterange-picker";
@@ -24,7 +24,7 @@ const AnalyticsChoose = ({
   const [endDate, setEndDate] = useState(null);
 
   return (
-    <View>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <View style={styles.chooseContainer}>
         <Text>Group by:</Text>
         <Dropdown
@@ -114,7 +114,7 @@ const AnalyticsChoose = ({
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

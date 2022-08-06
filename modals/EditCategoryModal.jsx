@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Modal,
+  ScrollView,
+} from "react-native";
 import Colors from "../constants/Colors";
 import ColorPickerModal from "./ColorPickerModal";
 import TextBox from "../components/TextBox";
@@ -37,7 +44,10 @@ const EditCategoryModal = ({ category, onEditCategory, visible, onCancel }) => {
       animationType="slide"
       onRequestClose={onCloseModal}
     >
-      <View style={styles.screen}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.screen}
+      >
         <View style={styles.colorWrapper}>
           <View style={{ flex: 1, height: 70 }}>
             <TextBox
@@ -65,7 +75,7 @@ const EditCategoryModal = ({ category, onEditCategory, visible, onCancel }) => {
             <Text>Cancel</Text>
           </CTButton>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, Modal, StyleSheet, View } from "react-native";
+import { Text, Modal, StyleSheet, View, ScrollView } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CTButton from "../components/CTButton";
 import TextBox from "../components/TextBox";
@@ -34,7 +34,10 @@ const EditCostModal = ({ visible, cost, onClose, onEdit, category }) => {
           setCostType(cost.type);
         }}
       >
-        <View style={{ alignItems: "center", margin: 30 }}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ alignItems: "center", margin: 30 }}
+        >
           <View style={styles.fieldWrapper}>
             <View style={{ flex: 1 }}>
               <Text>New Title</Text>
@@ -111,7 +114,7 @@ const EditCostModal = ({ visible, cost, onClose, onEdit, category }) => {
               <Text>Cancel</Text>
             </CTButton>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
     </>
   );

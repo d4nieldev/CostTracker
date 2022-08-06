@@ -1,4 +1,5 @@
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Keyboard } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const TextBox = (props) => {
   return <TextInput {...props} style={{ ...styles.textbox, ...props.style }} />;

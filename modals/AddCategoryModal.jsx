@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, Text, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Modal,
+  ScrollView,
+} from "react-native";
 import Colors from "../constants/Colors";
 import ColorPickerModal from "./ColorPickerModal";
 import TextBox from "../components/TextBox";
@@ -29,7 +36,10 @@ const AddCategoryModal = (props) => {
       animationType="slide"
       onRequestClose={props.onCancel}
     >
-      <View style={styles.screen}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.screen}
+      >
         <LargeText style={{ paddingVertical: 70 }}>
           Add a New Category
         </LargeText>
@@ -63,7 +73,7 @@ const AddCategoryModal = (props) => {
             <Text>Cancel</Text>
           </CTButton>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };
