@@ -26,7 +26,7 @@ const CostTypePicker = ({ oldTypes, onChoose }) => {
         onChange={(item) => {
           if (item.value === 0) setIsAddTypeVisible(true);
           else {
-            onChoose(item.name);
+            onChoose(item.label);
           }
           setIsTypeSelectFocus(false);
         }}

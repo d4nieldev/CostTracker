@@ -13,7 +13,6 @@ const AnalyticsScreen = ({ categories }) => {
     { label: "Category", value: 2 },
     { label: "Date", value: 3 },
   ];
-
   let categoryIndex = 0;
   const typeOptions = categories
     .flatMap((c) =>
