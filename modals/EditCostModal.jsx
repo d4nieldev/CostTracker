@@ -8,7 +8,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import CostTypePicker from "../components/CostTypePicker";
 import LargeText from "../components/LargeText";
 
-const EditCostModal = ({ visible, cost, onClose, onEdit, category }) => {
+const EditCostModal = ({ visible, cost, onClose, onEdit, category, types }) => {
   if (!cost) return <></>;
   const [title, setTitle] = useState(cost.title);
   const [amount, setAmount] = useState(cost.cost);
@@ -74,7 +74,7 @@ const EditCostModal = ({ visible, cost, onClose, onEdit, category }) => {
                   value: 0,
                   label: "Add New",
                 },
-                ...props.types.map((item, index) => ({
+                ...types.map((item, index) => ({
                   value: index + 1,
                   label: item,
                 })),

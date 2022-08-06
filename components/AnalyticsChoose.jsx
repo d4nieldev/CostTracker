@@ -99,6 +99,7 @@ const AnalyticsChoose = ({
       >
         <Text>Choose relevant dates</Text>
       </DateRangePicker>
+
       {startDate && endDate && (
         <View>
           <Text>

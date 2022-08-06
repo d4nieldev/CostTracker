@@ -25,7 +25,10 @@ export default function App() {
 
       if (savedCategories !== null) {
         savedCategories.forEach((c) =>
-          c.items.forEach((i) => (i.date = new Date(i.date)))
+          c.items.forEach((i) => {
+            i.date = new Date(i.date);
+            i.multiplier = 1;
+          })
         );
         setCategories(savedCategories);
       }

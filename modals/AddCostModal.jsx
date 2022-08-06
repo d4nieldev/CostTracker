@@ -33,6 +33,7 @@ const AddCostModal = (props) => {
     longitude: 0,
   });
   const [costType, setCostType] = useState("General");
+  const [multiplier, setMultiplier] = useState(1);
 
   // fetch location
   const [location, setLocation] = useState({
@@ -135,6 +136,13 @@ const AddCostModal = (props) => {
             value={costAmount.toString()}
             keyboardType="numeric"
             onChangeText={(text) => setCostAmount(parseFloat(text))}
+          />
+          <TextBox
+            placeholder="$ value"
+            style={{ borderColor: costAmountBorderColor }}
+            value={multiplier.toString()}
+            keyboardType="numeric"
+            onChangeText={(text) => setMultiplier(parseFloat(text))}
           />
         </View>
 
