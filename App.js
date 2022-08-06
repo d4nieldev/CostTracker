@@ -18,19 +18,31 @@ const Drawer = createDrawerNavigator();
 export default function App() {
   const [categories, setCategories] = useState([]);
 
+  const load = async () => {
+    try {
+      let savedCategories = await AsyncStorage.getItem("@categories");
+      savedCategories = JSON.parse(savedCategories);
+
+      if (savedCategories !== null) {
+        savedCategories.forEach((c) =>
+          c.items.forEach((i) => (i.date = new Date(i.date)))
+        );
+        setCategories(savedCategories);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
-    (async () => {
-      try {
-        const value = await AsyncStorage.getItem("categories");
-        if (value != null) setCategories(value);
-      } catch (error) {}
-    })();
+    load();
   }, []);
 
-  const presistData = (newData) => {
-    async () => {
-      await AsyncStorage.setItem("categories", newData);
-    };
+  const presistData = async (data) => {
+    try {
+      await AsyncStorage.setItem("@categories", JSON.stringify(data));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const [isEditCategoryVisible, setIsEditCategoryVisible] = useState(false);
