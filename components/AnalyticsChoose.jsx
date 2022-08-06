@@ -1,8 +1,8 @@
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { useState } from "react";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
-import DateRangePicker from "react-native-daterange-picker";
 import moment from "moment";
+import DateRangePicker from "rn-select-date-range";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AnalyticsChoose = ({
@@ -22,6 +22,7 @@ const AnalyticsChoose = ({
   const [isTypesFocus, setIsTypesFocus] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [isDateRangeVisible, setIsDateRangeVisible] = useState(false);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -82,23 +83,27 @@ const AnalyticsChoose = ({
         />
       </View>
 
-      <DateRangePicker
-        onChange={(dates) => {
-          if (dates.startDate != null) setStartDate(dates.startDate.toDate());
-          if (dates.endDate != null) {
-            const t = dates.endDate.toDate();
-            t.setDate(t.getDate() + 1);
-            setEndDate(t);
-          }
-          onDateRangeSelect(startDate, endDate);
-        }}
-        startDate={moment(startDate)}
-        endDate={moment(endDate)}
-        displayedDate={moment()}
-        range={true}
-      >
-        <Text>Choose relevant dates</Text>
-      </DateRangePicker>
+      <TouchableOpacity onPress={() => setIsDateRangeVisible((v) => !v)}>
+        <Text>View costs from dates</Text>
+      </TouchableOpacity>
+      {isDateRangeVisible && (
+        <DateRangePicker
+          onSelectDateRange={(range) => {
+            newStart = startDate;
+            newEnd = endDate;
+            if (range.firstDate != undefined)
+              newStart = range.firstDate.toDate();
+            if (range.secondDate != undefined)
+              newEnd = range.secondDate.toDate();
+            setStartDate(newStart);
+            setEndDate(newEnd);
+            onDateRangeSelect(newStart, newEnd);
+          }}
+          blockSingleDateSelection={true}
+          selectedDateContainerStyle={styles.selectedDateContainerStyle}
+          selectedDateStyle={styles.selectedDateStyle}
+        />
+      )}
 
       {startDate && endDate && (
         <View>
@@ -109,6 +114,7 @@ const AnalyticsChoose = ({
             onPress={() => {
               setStartDate(null);
               setEndDate(null);
+              onDateRangeSelect(startDate, endDate);
             }}
           >
             <Text>(cancel)</Text>
@@ -131,6 +137,17 @@ const styles = StyleSheet.create({
   },
   chooseContainer: {
     marginBottom: 20,
+  },
+  selectedDateContainerStyle: {
+    height: 35,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "blue",
+  },
+  selectedDateStyle: {
+    fontWeight: "bold",
+    color: "white",
   },
 });
 

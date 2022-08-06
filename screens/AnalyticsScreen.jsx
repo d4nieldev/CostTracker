@@ -33,8 +33,8 @@ const AnalyticsScreen = ({ categories }) => {
   );
 
   const [dateRange, setDateRange] = useState({
-    startDate: 0,
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
   });
 
   const filterData = (
@@ -62,11 +62,12 @@ const AnalyticsScreen = ({ categories }) => {
     );
 
     const filterCost = (item) => {
-      return (
-        item.date >= dateRangeUpdated.startDate &&
-        item.date <= dateRangeUpdated.endDate &&
-        typesUpdated.includes(getValueByTypeName(item.type))
-      );
+      console.log(dateRangeUpdated);
+      return dateRangeUpdated.startDate
+        ? item.date >= dateRangeUpdated.startDate
+        : true && dateRangeUpdated.endDate
+        ? item.date <= dateRangeUpdated.endDate
+        : true && typesUpdated.includes(getValueByTypeName(item.type));
     };
 
     if (groupByUpdated === 1) {
