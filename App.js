@@ -27,7 +27,7 @@ export default function App() {
         savedCategories.forEach((c) =>
           c.items.forEach((i) => {
             i.date = new Date(i.date);
-            i.multiplier = 1;
+            i.multiplier = i.multiplier ? i.multiplier : 1;
           })
         );
         setCategories(savedCategories);
@@ -91,7 +91,15 @@ export default function App() {
     });
   };
 
-  const addCostHandler = (category, title, amount, location, date, type) => {
+  const addCostHandler = (
+    category,
+    title,
+    amount,
+    location,
+    date,
+    type,
+    multiplier
+  ) => {
     setCategories((existingCategories) => {
       const unChangedCategories = existingCategories.filter(
         (c) => c != category
@@ -106,7 +114,15 @@ export default function App() {
 
       modifiedCategory.items = [
         ...category.items,
-        { id: lastId + 1, title, location, date, cost: amount, type },
+        {
+          id: lastId + 1,
+          title,
+          location,
+          date,
+          cost: amount,
+          type,
+          multiplier,
+        },
       ];
 
       modifiedCategory.items.sort(compareObjects);
@@ -125,14 +141,23 @@ export default function App() {
     cost,
     location,
     date,
-    type
+    type,
+    multiplier
   ) => {
     setCategories((existingCategories) => {
       const categoryToEdit = existingCategories.find(
         (c) => c.id === categoryId
       );
       let costToEdit = categoryToEdit.items.find((c) => c.id === costId);
-      costToEdit = { id: costId, title, location, date, cost, type };
+      costToEdit = {
+        id: costId,
+        title,
+        location,
+        date,
+        cost,
+        type,
+        multiplier,
+      };
       categoryToEdit.items = [
         ...categoryToEdit.items.filter((c) => c.id !== costId),
         costToEdit,

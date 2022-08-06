@@ -21,7 +21,7 @@ const HomeScreen = ({
       (totalSum, curCategory) =>
         totalSum +
         curCategory.items.reduce(
-          (categorySum, curCost) => categorySum + curCost.cost,
+          (categorySum, curCost) => categorySum + parseFloat(curCost.cost),
           0
         ),
       0

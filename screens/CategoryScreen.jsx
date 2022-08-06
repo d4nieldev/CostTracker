@@ -61,8 +61,8 @@ const CategoryScreen = ({
     { label: "Title", value: 5 },
   ];
 
-  const addCostHandler = (title, amount, location, date, type) => {
-    onAddCost(category, title, amount, location, date, type);
+  const addCostHandler = (title, amount, location, date, type, multiplier) => {
+    onAddCost(category, title, amount, location, date, type, multiplier);
     setIsAddCostVisible(false);
   };
 
@@ -149,7 +149,7 @@ const CategoryScreen = ({
         visible={editCostVisible}
         cost={editedCost}
         onClose={() => setEditCostVisible(false)}
-        onEdit={(title, cost, location, date, type) =>
+        onEdit={(title, cost, location, date, type, multiplier) =>
           onEditCost(
             category.id,
             editedCost.id,
@@ -157,7 +157,8 @@ const CategoryScreen = ({
             cost,
             location,
             date,
-            type
+            type,
+            multiplier
           )
         }
         category={category}

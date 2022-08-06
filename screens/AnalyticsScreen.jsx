@@ -62,7 +62,6 @@ const AnalyticsScreen = ({ categories }) => {
     );
 
     const filterCost = (item) => {
-      console.log(dateRangeUpdated);
       return dateRangeUpdated.startDate
         ? item.date >= dateRangeUpdated.startDate
         : true && dateRangeUpdated.endDate
@@ -79,7 +78,8 @@ const AnalyticsScreen = ({ categories }) => {
           if (filterCost(item))
             map.set(
               item.type,
-              map.get(item.type) ? map.get(item.type) : 0 + item.cost
+              (map.get(item.type) ? map.get(item.type) : 0) +
+                item.cost * item.multiplier
             );
           return map;
         }, new Map())
@@ -95,7 +95,8 @@ const AnalyticsScreen = ({ categories }) => {
           key: name,
           svg: { fill: color },
           amount: items.reduce(
-            (sum, item) => (filterCost(item) ? sum + item.cost : sum),
+            (sum, item) =>
+              filterCost(item) ? sum + item.cost * item.multiplier : sum,
             0
           ),
         }));
@@ -108,9 +109,10 @@ const AnalyticsScreen = ({ categories }) => {
           if (filterCost(item))
             map.set(
               item.date.toDateString(),
-              map.get(item.datetoDateString())
-                ? map.get(item.datetoDateString())
-                : 0 + item.cost
+              (map.get(item.date.toDateString())
+                ? map.get(item.date.toDateString())
+                : 0) +
+                item.cost * item.multiplier
             );
           return map;
         }, new Map())

@@ -23,7 +23,7 @@ import { Keyboard } from "react-native";
 const AddCostModal = (props) => {
   const [costTitle, setCostTitle] = useState("");
   const [costTitleBorderColor, setCostTitleBorderColor] = useState("black");
-  const [costAmount, setCostAmount] = useState(0);
+  const [costAmount, setCostAmount] = useState();
   const [costAmountBorderColor, setCostAmountBorderColor] = useState("black");
   const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
@@ -33,7 +33,7 @@ const AddCostModal = (props) => {
     longitude: 0,
   });
   const [costType, setCostType] = useState("General");
-  const [multiplier, setMultiplier] = useState(1);
+  const [multiplier, setMultiplier] = useState("1");
 
   // fetch location
   const [location, setLocation] = useState({
@@ -74,13 +74,20 @@ const AddCostModal = (props) => {
       setCostTitleBorderColor("red");
     } else setCostTitleBorderColor("black");
 
-    if (isNaN(costAmount) || costAmount < 0) {
+    if (isNaN(parseFloat(costAmount)) || parseFloat(costAmount) < 0) {
       errorOccured = true;
       setCostAmountBorderColor("red");
     } else setCostAmountBorderColor("black");
 
     if (!errorOccured) {
-      props.onAdd(costTitle, costAmount, location, costDate, costType);
+      props.onAdd(
+        costTitle,
+        costAmount,
+        location,
+        costDate,
+        costType,
+        parseFloat(multiplier)
+      );
       resetFields();
     }
   };
@@ -132,17 +139,17 @@ const AddCostModal = (props) => {
             onChangeText={(text) => setCostTitle(text)}
           />
           <TextBox
+            placeholder="Cost"
             style={{ borderColor: costAmountBorderColor }}
-            value={costAmount.toString()}
+            value={costAmount}
             keyboardType="numeric"
-            onChangeText={(text) => setCostAmount(parseFloat(text))}
+            onChangeText={(text) => setCostAmount(text)}
           />
           <TextBox
             placeholder="$ value"
-            style={{ borderColor: costAmountBorderColor }}
-            value={multiplier.toString()}
+            value={multiplier}
             keyboardType="numeric"
-            onChangeText={(text) => setMultiplier(parseFloat(text))}
+            onChangeText={(text) => setMultiplier(text)}
           />
         </View>
 

@@ -10,7 +10,9 @@ const Cost = ({ cost, onViewLocation, onDelete, onEdit }) => {
           <Text>See transaction location on map</Text>
         </TouchableOpacity>
         <Text style={styles.detailItem}>{cost.date.toDateString()}</Text>
-        <Text style={styles.detailItem}>{cost.cost}</Text>
+        <Text style={styles.detailItem}>
+          {cost.cost} X {cost.multiplier} = {cost.cost * cost.multiplier}
+        </Text>
         <Text style={styles.detailItem}>{cost.type}</Text>
       </View>
       <View>

@@ -8,15 +8,16 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import CostTypePicker from "../components/CostTypePicker";
 import LargeText from "../components/LargeText";
 
-const EditCostModal = ({ visible, cost, onClose, onEdit, category, types }) => {
+const EditCostModal = ({ visible, cost, onClose, onEdit, types }) => {
   if (!cost) return <></>;
   const [title, setTitle] = useState(cost.title);
-  const [amount, setAmount] = useState(cost.cost);
+  const [amount, setAmount] = useState(cost.cost.toString());
   const [location, setLocation] = useState(cost.location);
   const [isLocationPickerVisible, setIsLocationPickerVisible] = useState(false);
   const [date, setDate] = useState(cost.date);
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
   const [costType, setCostType] = useState(cost.type);
+  const [multiplier, setMultiplier] = useState(cost.multiplier.toString());
 
   return (
     <>
@@ -46,9 +47,18 @@ const EditCostModal = ({ visible, cost, onClose, onEdit, category, types }) => {
             <View style={{ flex: 1 }}>
               <Text>New Cost</Text>
               <TextBox
-                value={amount.toString()}
+                value={amount}
                 keyboardType="numeric"
-                onChangeText={(text) => setAmount(parseFloat(text))}
+                onChangeText={(text) => setAmount(text)}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text>New Multiplier</Text>
+              <TextBox
+                placeholder="$ value"
+                value={multiplier}
+                keyboardType="numeric"
+                onChangeText={(text) => setMultiplier(text)}
               />
             </View>
           </View>
@@ -100,7 +110,14 @@ const EditCostModal = ({ visible, cost, onClose, onEdit, category, types }) => {
             <CTButton
               title="Confirm"
               onPress={() => {
-                onEdit(title, amount, location, date, costType);
+                onEdit(
+                  title,
+                  parseFloat(amount),
+                  location,
+                  date,
+                  costType,
+                  parseFloat(multiplier)
+                );
                 onClose();
               }}
             >
