@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { PieChart } from "react-native-svg-charts";
 import { Text as SVGText } from "react-native-svg";
 import { useEffect, useState } from "react";
@@ -61,11 +61,15 @@ const AnalyticsScreen = ({ categories }) => {
     );
 
     const filterCost = (item) => {
-      return dateRangeUpdated.startDate
-        ? item.date >= dateRangeUpdated.startDate
-        : true && dateRangeUpdated.endDate
-        ? item.date <= dateRangeUpdated.endDate
-        : true && typesUpdated.includes(getValueByTypeName(item.type));
+      return (
+        (dateRangeUpdated.startDate
+          ? item.date >= dateRangeUpdated.startDate
+          : true) &&
+        (dateRangeUpdated.endDate
+          ? item.date <= dateRangeUpdated.endDate
+          : true) &&
+        typesUpdated.includes(getValueByTypeName(item.type))
+      );
     };
 
     if (groupByUpdated === 1) {
@@ -158,7 +162,7 @@ const AnalyticsScreen = ({ categories }) => {
   };
 
   return (
-    <View>
+    <ScrollView keyboardShouldPersistTaps="handled">
       <AnalyticsChoose
         onGroupByChoose={(val) => {
           setGroupByValue(val);
@@ -220,7 +224,7 @@ const AnalyticsScreen = ({ categories }) => {
           keyExtractor={(item) => item.key}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

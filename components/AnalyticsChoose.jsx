@@ -25,7 +25,7 @@ const AnalyticsChoose = ({
   const [isDateRangeVisible, setIsDateRangeVisible] = useState(false);
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled">
+    <View>
       <View style={styles.chooseContainer}>
         <Text>Group by:</Text>
         <Dropdown
@@ -121,7 +121,7 @@ const AnalyticsChoose = ({
           </TouchableOpacity>
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
